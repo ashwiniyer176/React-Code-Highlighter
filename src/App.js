@@ -1,15 +1,21 @@
 import axios from "axios";
 import React from "react";
+import { urls } from "./config.js";
+
+import CodeCell from "./components/CodeCell.js";
 
 export default function App() {
   const [data, setData] = React.useState();
   const [loading, setLoading] = React.useState(true);
-  async function fetchSnippets() {
+
+  // GET request to defined API url using axios
+  async function getDetails(link) {
     await axios({
       method: "get",
-      url: "http://127.0.0.1:8000/snippets/2/",
+      url: `${urls.API_URL}${link}`,
     })
       .then((res) => {
+        // Set data to variable to the response object
         console.log(res);
         setData(res.data);
         setLoading(false);
@@ -21,7 +27,7 @@ export default function App() {
 
   React.useEffect(() => {
     setLoading(true);
-    fetchSnippets();
+    getDetails("/snippets/2");
   }, []);
   if (loading) {
     return null;
@@ -29,7 +35,7 @@ export default function App() {
     return (
       <div>
         <h1>Hello</h1>
-        <p>{data.code}</p>
+        <CodeCell code={data.code} />
       </div>
     );
   }
