@@ -31,16 +31,19 @@ export default function ListComponent({ listItems }) {
     return null;
   } else {
     var code;
-    if (listItems == "snippets") code = <CodeSnippet code={item.code} />;
-    else if (listItems == "users") code = <CodeSnippet code={item.username} />;
+    if (listItems == "snippets") {
+      code = data.map((item, key) => {
+        return <CodeSnippet code={item.code} />;
+      });
+    } else if (listItems == "users") {
+      code = data.map((item, key) => {
+        return <CodeSnippet code={item.username} />;
+      });
+    }
     return (
       <div>
         <h1>Hello to a code highlighter</h1>
-        <ul>
-          {data.map((item, key) => {
-            return <div>{code}</div>;
-          })}
-        </ul>
+        <ul>{code}</ul>
       </div>
     );
   }
