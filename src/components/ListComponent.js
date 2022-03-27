@@ -3,7 +3,7 @@ import axios from "axios";
 import { urls } from "../config.js";
 import CodeSnippet from "./CodeSnippet/CodeSnippet.js";
 
-export default function ListComponent() {
+export default function ListComponent({ listItems }) {
   const [data, setData] = React.useState();
   const [loading, setLoading] = React.useState(true);
 
@@ -25,21 +25,20 @@ export default function ListComponent() {
   }
   React.useEffect(() => {
     setLoading(true);
-    getDetails("/snippets/");
+    getDetails(`/${listItems}/`);
   }, []);
   if (loading) {
     return null;
   } else {
+    var code;
+    if (listItems == "snippets") code = <CodeSnippet code={item.code} />;
+    else if (listItems == "users") code = <CodeSnippet code={item.username} />;
     return (
       <div>
         <h1>Hello to a code highlighter</h1>
         <ul>
           {data.map((item, key) => {
-            return (
-              <div>
-                <CodeSnippet code={item.code} />
-              </div>
-            );
+            return <div>{code}</div>;
           })}
         </ul>
       </div>
